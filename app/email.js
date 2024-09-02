@@ -24,12 +24,13 @@ export async function sendOffEmail() {
     if(!isSending) {
         const info = await transporter.sendMail(emailData);
         isSending = true;
-        logger.info('Successfully send email', isSending);
+        logger.info('Successfully send OFF email', isSending);
     }
 
     const timeoutID = setTimeout(() => {
         isSending = false;
-    }, config.app.TEN_MIN_IN_MS);
+        logger.info('Successfully reset send OFF email statues', isSending);
+    }, config.app.TWENTY_MIN_IN_MS);
 
     // clearTimeout(timeoutID);
 }
@@ -40,12 +41,13 @@ export async function sendOnEmail() {
     if(!isSending) {
         const info = await transporter.sendMail(emailData);
         isSending = true;
-        logger.info('Successfully send email', isSending);
+        logger.info('Successfully send ON email', isSending);
     }
 
     const timeoutID = setTimeout(() => {
         isSending = false;
-    }, config.app.TEN_MIN_IN_MS);
+        logger.info('Successfully reset send ON email statues', isSending);
+    }, config.app.TWENTY_MIN_IN_MS);
 
     // clearTimeout(timeoutID);
 }

@@ -3,7 +3,7 @@ import {config} from "./config.js";
 import {logger} from "./logger.js";
 
 import path from 'path';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -20,12 +20,13 @@ export const getData = async () => {
 
         return JSON.parse(result);
     } catch (e) {
-        throw e;
+        logger.error(`Cant parse TG channel: ${e}`);
     }
 }
 
 export const filterByGroup = (data, groupName) => {
     const regex = new RegExp(`${groupName}: (\\d+)% (\\d{2}:\\d{2})`);
+
     return data.map(message => {
         const match = message.message.match(regex);
         return match ? `${groupName}: ${match[1]}% ${match[2]}` : null;
@@ -52,7 +53,7 @@ export const checkPercentDiff = async (data) => {
             return config.status.OFF;
         }
 
-        if((currPercent - prevPercent) >= config.app.MAX_PERCENT_DIFF) {
+        if ((currPercent - prevPercent) >= config.app.MAX_PERCENT_DIFF) {
             return config.status.ON;
         }
     }

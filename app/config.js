@@ -15,6 +15,7 @@ export const config = {
         THIRTY_SEC_IN_MS: 30_000,
         MAX_PERCENT_DIFF: 3,
         TEN_MIN_IN_MS: 600_000,
+        TWENTY_MIN_IN_MS: 600_000 * 2,
     },
     tg: {
         TELEGRAM_CHANNEL: process.env.TELEGRAM_CHANNEL,
