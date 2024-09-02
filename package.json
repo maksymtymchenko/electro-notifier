@@ -1,0 +1,28 @@
+{
+  "name": "eloctro-notifier",
+  "version": "1.0.0",
+  "description": "Using to send notifications about electricity",
+  "type": "module",
+  "main": "app/index.js",
+  "scripts": {
+    "dev": "nodemon ./app index.js",
+    "start": "node ./app index.js"
+  },
+  "author": "Maksym Tymchenko",
+  "keywords": [
+    "node",
+    "telegram",
+    "notifier",
+    "js",
+    "email"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "nodemailer": "^6.9.14",
+    "telegram-scraper": "^1.0.2"
+  }
+}
