@@ -17,9 +17,14 @@ export const config = {
         TEN_MIN_IN_MS: 600_000,
     },
     tg: {
-        telegramChannel: process.env.TELEGRAM_CHANNEL,
+        TELEGRAM_CHANNEL: process.env.TELEGRAM_CHANNEL,
     },
     server: {
         PORT: process.env.PORT,
+    },
+    status: {
+        ON: 'ON',
+        OFF: 'OFF',
+        NO: 'NO',
     }
 }

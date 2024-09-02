@@ -2,9 +2,16 @@ import {telegram_scraper} from "telegram-scraper";
 import {config} from "./config.js";
 import {logger} from "./logger.js";
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+
 export const getData = async () => {
     try {
-        const result = await telegram_scraper(config.tg.telegramChannel);
+        const result = await telegram_scraper(config.tg.TELEGRAM_CHANNEL);
 
         if (!result) {
             logger.error(`Telegram scraper not found: ${result}`);
@@ -16,7 +23,6 @@ export const getData = async () => {
         throw e;
     }
 }
-
 
 export const filterByGroup = (data, groupName) => {
     const regex = new RegExp(`${groupName}: (\\d+)% (\\d{2}:\\d{2})`);
@@ -32,21 +38,26 @@ export const extractPercentage = (str) => {
     return match ? parseInt(match[1], 10) : null;
 };
 
+
 export const checkPercentDiff = async (data) => {
     for (let i = 1; i < data.length; i++) {
         const prevPercent = extractPercentage(data[i - 1]);
         const currPercent = extractPercentage(data[i]);
 
-        if(!prevPercent || !currPercent) {
+        if (!prevPercent && !currPercent) {
             logger.error('No percents found in Data');
         }
 
         if ((prevPercent - currPercent) >= config.app.MAX_PERCENT_DIFF) {
-            return true;
+            return config.status.OFF;
+        }
+
+        if((currPercent - prevPercent) >= config.app.MAX_PERCENT_DIFF) {
+            return config.status.ON;
         }
     }
 
-    return false;
+    return config.status.NO;
 }
 
 export const getDifferenceInMinutes = (dateString) => {
@@ -61,9 +72,24 @@ export const getDifferenceInMinutes = (dateString) => {
 export const getCorrectData = data => {
     return data.filter(item => getDifferenceInMinutes(item.datetime) <= config.app.MAX_MESSAGE_DIFF_TIME)
         .map(item => {
-        return {
-            message: item.message_text,
-            date: item.datetime
-        }
-    });
+            return {
+                message: item.message_text,
+                date: item.datetime
+            }
+        });
+}
+
+export const generateEmailMsg = text => {
+    return {
+        from: '"Electro Notifier ⚡" <makstimchenk@gmail.com>',
+        to: "makstimchenk@gmail.com",
+        subject: "Electro Notifier ⚡",
+        text: text,
+        attachments: [
+            {
+                filename: "ahh.jpeg",
+                path: __dirname + "/img/ahh.jpeg",
+            }
+        ]
+    }
 }

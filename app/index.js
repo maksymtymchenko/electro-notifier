@@ -1,6 +1,6 @@
 import express from 'express';
 import * as utils from "./utils.js"
-import {sendEmail} from "./email.js";
+import {sendOnEmail, sendOffEmail} from "./email.js";
 import {config} from "./config.js";
 import {logger} from "./logger.js";
 
@@ -24,9 +24,10 @@ async function main() {
     const secondGroupData = utils.filterByGroup(messages, 'Група 2');
 
     const hasPercentDiff = await utils.checkPercentDiff(secondGroupData);
-    logger.info("hasPercentDiff", hasPercentDiff)
+    logger.info("Has percent difference:", hasPercentDiff)
 
-    if(hasPercentDiff) await sendEmail();
+    if(hasPercentDiff === config.status.OFF) await sendOffEmail();
+    if(hasPercentDiff === config.status.ON) await sendOnEmail();
 }
 
 setInterval(main, config.app.THIRTY_SEC_IN_MS);
