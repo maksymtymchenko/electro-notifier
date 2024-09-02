@@ -31,5 +31,4 @@ class Logger {
     }
 }
 
-// Usage example:
 export const logger = new Logger();

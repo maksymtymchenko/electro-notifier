@@ -18,5 +18,8 @@ export const config = {
     },
     tg: {
         telegramChannel: process.env.TELEGRAM_CHANNEL,
+    },
+    server: {
+        PORT: process.env.PORT,
     }
 }
